@@ -448,6 +448,18 @@
     </div>
 
     <div class="ref-card">
+      <h3>RIR — Reps In Reserve</h3>
+      <p style="font-size:13px; color:var(--ink-soft); line-height:1.55; margin:0 0 14px;">RIR betyder hur många reps du hade kvar i tanken när du avslutade setet — inte hur hårt du kört, utan hur mycket mer du <em>hade kunnat</em> köra. Det är ett precist verktyg för att reglera intensitet i styrketräningen utan att gå till failure.</p>
+      <table class="ref-table">
+        <tr><th>RIR</th><th>Innebär</th></tr>
+        <tr><td class="k">RIR 0</td><td>Max — ingenting kvar. Sista repen var verkligen sista repen.</td></tr>
+        <tr><td class="k">RIR 1</td><td>Hade klarat 1 rep till — mycket krävande.</td></tr>
+        <tr><td class="k">RIR 2</td><td>Hade klarat 2 rep till — krävande men kontrollerbart.</td></tr>
+        <tr><td class="k">RIR 3–4</td><td>Kontrollerat och stabilt. Det är här vi jobbar i detta program — tillräcklig stimulans utan att gå till failure och utan att stjäla återhämtning från konditionspassen.</td></tr>
+      </table>
+    </div>
+
+    <div class="ref-card">
       <h3>LT1 / LT2</h3>
       <table class="ref-table">
         <tr><th>Nivå</th><th>%maxpuls</th><th>RPE</th><th>Känns som</th></tr>
@@ -499,7 +511,7 @@ const PHASES = [
     purpose:"Höja intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
   {id:'f3', tag:'p-f3', label:'Fas 3', name:'Race prep', weeks:[11,14],
     purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 med fokus på att bygga mental och fysisk raceförmåga. Vi går mot att jobba i tävlingstempo under ett helt race och testar hela racets känsla i två simuleringar."},
-  {id:'rw', tag:'p-rw', label:'Race week', name:'Taper & race', weeks:[15,15],
+  {id:'rw', tag:'p-rw', label:'Race week', name:'Race week!', weeks:[15,15],
     purpose:"Sista veckan! Vi sänker volymen men skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena."}
 ];
 
@@ -537,7 +549,7 @@ const TORS_STYRKA_BEN = {
   ]
 };
 const TORS_STYRKA_OVERKROPP = {
-  name:"Styrka överkropp + valfri jogg", tag:'strength', dow:'Tors',
+  name:"Styrka överkropp + valfri kondition", tag:'strength', dow:'Tors',
   purpose:"Bibehålla överkroppsstyrka. Benen vilar helt den här perioden — de bär redan tisdag/fredags stigande belastning.",
   blocks:[
     {t:"Uppvärmning", d:"5–10 min allmän + specifik"},
@@ -546,7 +558,7 @@ const TORS_STYRKA_OVERKROPP = {
   ]
 };
 const SAT_EASY_F1 = {
-  name:"Valfri lätt aktivitet", tag:'easy', dow:'Lör',
+  name:"Valfri lätt kondition", tag:'easy', dow:'Lör',
   purpose:"Tid för att bygga extra aerob kapacitet när tid och vilja finns",
   blocks:[{t:"Fritt val", d:"Löpning 30–90 min, RPE ≤4, efter känsla. Om benen känns tunga men träningssuget finns: byt till cykel eller skierg med samma låga intensitet"}]
 };
@@ -627,9 +639,9 @@ const MON_F3 = {
   purpose:"Wall balls är den absolut sista stationen i racet, direkt efter åttonde och sista löpningen, precis innan mål — det är stationen som avgör hur racet känns i det ögonblick det spelar mest roll.",
   blocks:[
     {t:"Block 1", d:"50 min löpning, samma tempo som tidigare måndagar (RPE 3–4, ≤65% maxpuls)"},
-    {t:"Block 2", d:"Direkt därefter: 100 wall balls, för tid, tävlingsvikt"},
+    {t:"Block 2", d:"Vila 5 min. Därefter 100 wall balls för tid."},
     {t:"Vikt", d:"Full tävlingsvikt"},
-    {t:"Progression", d:"Identisk vecka till vecka — progressionen syns i sjunkande tid, inte stigande volym. Notera tiden varje gång."}
+    {t:"Progression", d:"Identisk vecka till vecka — progressionen syns i sjunkande tid, inte stigande volym. Notera tiden för att följa din utveckling."}
   ]
 };
 const TUE_F3 = {
@@ -642,14 +654,14 @@ const TUE_F3 = {
 };
 const FRI_F3 = {
   name:"Valfri lätt cardio eller vila", tag:'easy', dow:'Fre',
-  purpose:"Ren buffert inför lördagen.",
+  purpose:"Fylla på med aerob kapacitet utan att ta energi från lördagens simulering.",
   blocks:[{t:"Fritt val", d:"30 min, RPE ≤4, om kroppen vill röra på sig. Annars vila."}]
 };
 
 function wedBlock(pctNum, run, tempo, note){
   const f = pctNum/100;
   return {
-    name:"Hyroxblock 1–4"+(note?(' — '+note):''), tag:'quality', dow:'Ons',
+    name:"Hyroxpass"+(note?(' — '+note):''), tag:'quality', dow:'Ons',
     purpose: note==='Block A' ? "Del A av veckans delade toppass — full volym, första fyra stationerna." : "Baslinje som inte staplar på lördagens tunga pass.",
     blocks:[
       {t:"Huvudblock", d:"4 varv, löpning "+run+" m/varv → Skierg → Sled Push → Sled Pull → Burpee Broad Jumps"},
@@ -662,7 +674,7 @@ function wedBlock(pctNum, run, tempo, note){
 function satBlock(kind, run8, runPct, stationPct, tempo, note){
   return {
     name: note, tag:'race', dow:'Lör',
-    purpose: kind==='sim' ? "Fullt race, alla 8 stationer, ett sammanhängande pass — Simon ska känna hela racets form." :
+    purpose: kind==='sim' ? (stationPct===100 ? "Fullt race — full löpdistans och 100% stationsvolym. Nu kör vi hela racet på riktigt." : "Fullt race, alla 8 stationer men till "+stationPct+"%, ett sammanhängande pass — Nu ska vi känna in hela racets form.") :
              kind==='blockB' ? "Del B av veckans delade toppass — full volym, sista fyra stationerna. Inte en simulering." :
              "Volym ner, fart bibehållen — bygger bro till Race Week.",
     blocks:[
@@ -678,25 +690,26 @@ WEEKS[11] = {n:11, days:{
   mon:MON_F3, tue:TUE_F3,
   wed:wedBlock(60,650,'LT2-baslinje — hålls låg så den inte staplar på Sim 1'),
   thu:REST, fri:FRI_F3,
-  sat:satBlock('sim',1100,100,70,'Racetempo −30 sek/km','Simulering 1'),
+  sat:satBlock('sim',1100,100,75,'Racetempo −30 sek/km','Simulering 1'),
   sun:REST
-}, note:"Sim 1: första gången Simon kör hela racet i följd. Kontrollerad fart, full löpdistans (1100 m/segment) — han ska känna formen, inte maxa den. Stationsvolymen hålls nere (70%) så belastningen ändå blir hanterbar."};
+}, note:"Sim 1: första gången vi kör hela racet i följd. Kontrollerad fart, full löpdistans (1100 m för att efterlikna RoxZone). Här ska vi känna efter formen, inte maxa den. Stationsvolymen hålls dock nere till 75% för att inte kräva för mycket återhämtning"};
 
 WEEKS[12] = {n:12, days:{
-  mon:MON_F3, tue:TUE_F3,
+  mon:REST,
+  tue:{...TUE_F3, name:"Styrka överkropp + Zon 2 (valfritt)", purpose:"Valfritt pass — vila om kroppen behöver det efter Sim 1. "+TUE_F3.purpose},
   wed:wedBlock(100,1100,'Racetempo, full tävlingsvikt','Block A'),
   thu:REST, fri:FRI_F3,
-  sat:satBlock('blockB',1100,100,100,'Racetempo, full tävlingsvikt','Block B — stationer 5–8'),
+  sat:satBlock('blockB',1100,100,100,'Racetempo, full tävlingsvikt','Hyroxpass 2'),
   sun:REST
-}, note:"Toppveckan. Onsdag (block A, stationer 1–4) + lördag (block B, stationer 5–8) är tillsammans veckans fulla race vid 100% volym och full vikt — men delat på två pass, tre dagars mellanrum, så det aldrig blir en tredje simulering. Mest kumulativ belastning i hela programmet."};
+}, note:"Vecka efter Sim 1 inleds med vila måndag. Tisdag är valfritt — lyssna på kroppen. Vi kör sedan två Hyroxpass med fulla distanser på löpningar och övningar för att komma så nära racekänslan som möjligt."};
 
 WEEKS[13] = {n:13, days:{
   mon:MON_F3, tue:TUE_F3,
   wed:wedBlock(60,650,'LT2-baslinje — samma logik inför Sim 2'),
   thu:REST, fri:FRI_F3,
-  sat:satBlock('sim',825,75,75,'Racetempo −10–15 sek/km','Simulering 2'),
+  sat:satBlock('sim',1100,100,100,'Racetempo','Simulering 2'),
   sun:REST
-}, note:"Sim 2: närmare racefart, men bara 75% distans/volym — ingen springer ett helt halvmaralopp två veckor innan de ska springa halvmaran."};
+}, note:"Sim 2: Fullt race — full löpdistans och 100% stationsvolym. Vi fokuserar på pacing, teknik och mindset för att hitta ett upplägg och trygghet inför tävlingen."};
 
 WEEKS[14] = {n:14, days:{
   mon:MON_F3, tue:TUE_F3,
@@ -863,7 +876,7 @@ function renderWeek(){
     const tagClass = 'tag-'+day.tag;
     const tagLabel = {easy:'Lätt',quality:'Kvalitet',strength:'Styrka',rest:'Vila',race:'Race'}[day.tag];
     let bodyHtml = '';
-    if(day.purpose) bodyHtml += '<p class="day-purpose">'+day.purpose+'</p>';
+    if(day.purpose) bodyHtml += '<div class="day-purpose"><div class="blk-t" style="margin-bottom:6px;">Syfte</div>'+day.purpose+'</div>';
     (day.blocks||[]).forEach(b=>{
       bodyHtml += '<div class="blk">'+(b.t?'<div class="blk-t">'+b.t+'</div>':'')+'<div class="blk-d">'+b.d+'</div></div>';
     });
