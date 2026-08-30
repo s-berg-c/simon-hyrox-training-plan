@@ -624,10 +624,10 @@ Object.keys(F2).forEach(k=>{
   const n=+k, b=F2[k];
   WEEKS[n] = {n, days:{
     mon: MON_F2(b.mon),
-    tue: hyroxBlock('Tis','Hyroxblock 1'+(n===10?' Deload'),'Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Skierg:b.skierg+' m','Sled Push':b.sledpush,'Sled Pull':b.sledpull, BBJ:b.bbj}),
+    tue: hyroxBlock('Tis','Hyroxblock 1'+(n===10?' Deload': ""),'Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Skierg:b.skierg+' m','Sled Push':b.sledpush,'Sled Pull':b.sledpull, BBJ:b.bbj}),
     wed: REST,
     thu: TORS_STYRKA_OVERKROPP,
-    fri: hyroxBlock('Fre','Hyroxblock 2'+(n===10?' Deload'),'Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Row:b.row+' m','Farmers Carry':b.farmers,'Sandbag Lunges':b.lunges,'Wall Balls':b.wb}),
+    fri: hyroxBlock('Fre','Hyroxblock 2'+(n===10?' Deload': ""),'Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Row:b.row+' m','Farmers Carry':b.farmers,'Sandbag Lunges':b.lunges,'Wall Balls':b.wb}),
     sat: WEEKEND_EASY_F2,
     sun: WEEKEND_EASY_F2
   }, note: n===10 ? "Deload-vecka. Vi sänker volymen för att låta kroppen återhämta sig innan en intensiv träningsperiod." : null };
