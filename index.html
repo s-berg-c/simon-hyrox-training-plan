@@ -506,13 +506,13 @@ function fmtRange(startIdx){
 
 const PHASES = [
   {id:'f1', tag:'p-f1', label:'Fas 1', name:'Grundkapacitet', weeks:[1,6],
-    purpose:"Bygga en stabil aerob och hyrox-specifik grund innan vi lägger på fart och tyngd. Vi tränar i kontrollerad intensitet och fokuserar på att sätta rörelser och teknik. De första sex veckorna är fundamentet som resten av träningsperioden vilar på."},
+    purpose:"Fas 1 bygger en stabil aerob och hyrox-specifik grund innan vi lägger på fart och tyngd. Vi tränar i kontrollerad intensitet och fokuserar på att sätta rörelser och teknik. De första sex veckorna är fundamentet som resten av träningsperioden vilar på."},
   {id:'f2', tag:'p-f2', label:'Fas 2', name:'Trötta ben & högre pulszoner', weeks:[7,10],
-    purpose:"Höja intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
+    purpose:"Fas 2 höjer intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
   {id:'f3', tag:'p-f3', label:'Fas 3', name:'Race prep', weeks:[11,14],
     purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 med fokus på att bygga mental och fysisk raceförmåga. Vi går mot att jobba i tävlingstempo under ett helt race och testar hela racets känsla i två simuleringar."},
   {id:'rw', tag:'p-rw', label:'Race week', name:'Race week!', weeks:[15,15],
-    purpose:"Sista veckan! Vi sänker volymen men skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena."}
+    purpose:"Sista veckan. Vi sänker volymen men skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena!"}
 ];
 
 function phaseOfWeek(w){
@@ -635,8 +635,8 @@ Object.keys(F2).forEach(k=>{
 
 // Fas 3: v11-14 — Mon/Tue/Thu/Fri identical, Wed + Sat vary per week
 const MON_F3 = {
-  name:"Löpning + Wall Ball-test", tag:'quality', dow:'Mån',
-  purpose:"Wall balls är den absolut sista stationen i racet, direkt efter åttonde och sista löpningen, precis innan mål — det är stationen som avgör hur racet känns i det ögonblick det spelar mest roll.",
+  name:"Löpning + Wall Ball-test", tag:'easy', dow:'Mån',
+  purpose:"Bygga aerob kapacitet samt förbereda oss för den sista - och för många tuffaste - stationen i racet. Här ska vi bygga teknik och förberedelse inför race.",
   blocks:[
     {t:"Block 1", d:"50 min löpning, samma tempo som tidigare måndagar (RPE 3–4, ≤65% maxpuls)"},
     {t:"Block 2", d:"Vila 5 min. Därefter 100 wall balls för tid."},
@@ -652,17 +652,22 @@ const TUE_F3 = {
     {t:"Block 2", d:"20 min cardio, zon 2, RPE 3–4 (löpning, cykel eller skierg — fritt val)"}
   ]
 };
-const FRI_F3 = {
+const FRI_F3_SIM = {
   name:"Valfri lätt cardio eller vila", tag:'easy', dow:'Fre',
   purpose:"Fylla på med aerob kapacitet utan att ta energi från lördagens simulering.",
   blocks:[{t:"Fritt val", d:"30 min, RPE ≤4, om kroppen vill röra på sig. Annars vila."}]
+};
+const FRI_F3_OTHER = {
+  name:"Lätt cardio", tag:'easy', dow:'Fre',
+  purpose:"Extra aerob volym utan att belasta kvalitetspassen.",
+  blocks:[{t:"Fritt val", d:"Skierg, cykel eller rowerg, 30–40 min, RPE ≤4."}]
 };
 
 function wedBlock(pctNum, run, tempo, note){
   const f = pctNum/100;
   return {
-    name:"Hyroxpass"+(note?(' — '+note):''), tag:'quality', dow:'Ons',
-    purpose: note==='Block A' ? "Del A av veckans delade toppass — full volym, första fyra stationerna." : "Baslinje som inte staplar på lördagens tunga pass.",
+    name:"Hyroxpass 1", tag:'quality', dow:'Ons',
+    purpose: "Del 1 av veckans delade toppass — full volym, första fyra stationerna.",
     blocks:[
       {t:"Huvudblock", d:"4 varv, löpning "+run+" m/varv → Skierg → Sled Push → Sled Pull → Burpee Broad Jumps"},
       {t:"Tempo", d:tempo},
@@ -675,7 +680,7 @@ function satBlock(kind, run8, runPct, stationPct, tempo, note){
   return {
     name: note, tag:'race', dow:'Lör',
     purpose: kind==='sim' ? (stationPct===100 ? "Fullt race — full löpdistans och 100% stationsvolym. Nu kör vi hela racet på riktigt." : "Fullt race, alla 8 stationer men till "+stationPct+"%, ett sammanhängande pass — Nu ska vi känna in hela racets form.") :
-             kind==='blockB' ? "Del B av veckans delade toppass — full volym, sista fyra stationerna. Inte en simulering." :
+             kind==='blockB' ? "Full volym, sista fyra stationerna." :
              "Volym ner, fart bibehållen — bygger bro till Race Week.",
     blocks:[
       {t:"Löpning", d: (kind==='blockB' ? "4 × "+run8+" m" : "8 × "+run8+" m") + (runPct<100 ? "  ("+runPct+"% av full distans)" : "  (full distans)")},
@@ -689,7 +694,7 @@ function satBlock(kind, run8, runPct, stationPct, tempo, note){
 WEEKS[11] = {n:11, days:{
   mon:MON_F3, tue:TUE_F3,
   wed:wedBlock(60,650,'LT2-baslinje — hålls låg så den inte staplar på Sim 1'),
-  thu:REST, fri:FRI_F3,
+  thu:REST, fri:FRI_F3_SIM,
   sat:satBlock('sim',1100,100,75,'Racetempo −30 sek/km','Simulering 1'),
   sun:REST
 }, note:"Sim 1: första gången vi kör hela racet i följd. Kontrollerad fart, full löpdistans (1100 m för att efterlikna RoxZone). Här ska vi känna efter formen, inte maxa den. Stationsvolymen hålls dock nere till 75% för att inte kräva för mycket återhämtning"};
@@ -698,23 +703,23 @@ WEEKS[12] = {n:12, days:{
   mon:REST,
   tue:{...TUE_F3, name:"Styrka överkropp + Zon 2 (valfritt)", purpose:"Valfritt pass — vila om kroppen behöver det efter Sim 1. "+TUE_F3.purpose},
   wed:wedBlock(100,1100,'Racetempo, full tävlingsvikt','Block A'),
-  thu:REST, fri:FRI_F3,
+  thu:REST, fri:FRI_F3_OTHER,
   sat:satBlock('blockB',1100,100,100,'Racetempo, full tävlingsvikt','Hyroxpass 2'),
   sun:REST
-}, note:"Vecka efter Sim 1 inleds med vila måndag. Tisdag är valfritt — lyssna på kroppen. Vi kör sedan två Hyroxpass med fulla distanser på löpningar och övningar för att komma så nära racekänslan som möjligt."};
+}, note:"Vecka efter Sim 1 inleds med vila måndag. Tisdag är valfritt — lyssna på kroppen. Vi kör sedan två Hyroxpass med fulla distanser på löpningar och övningar för att komma så nära racekänslan som möjligt utan att kräva för mycket återhämtning."};
 
 WEEKS[13] = {n:13, days:{
   mon:MON_F3, tue:TUE_F3,
   wed:wedBlock(60,650,'LT2-baslinje — samma logik inför Sim 2'),
-  thu:REST, fri:FRI_F3,
+  thu:REST, fri:FRI_F3_SIM,
   sat:satBlock('sim',1100,100,100,'Racetempo','Simulering 2'),
   sun:REST
-}, note:"Sim 2: Fullt race — full löpdistans och 100% stationsvolym. Vi fokuserar på pacing, teknik och mindset för att hitta ett upplägg och trygghet inför tävlingen."};
+}, note:"Sim 2: Full racesimulering med full löpdistans och 100% stationsvolym. Vi fokuserar på pacing, teknik och mindset för att hitta ett upplägg och trygghet inför tävlingen."};
 
 WEEKS[14] = {n:14, days:{
   mon:MON_F3, tue:TUE_F3,
   wed:wedBlock(50,550,'Racetempo bibehållen — tapras med lördagen'),
-  thu:REST, fri:FRI_F3,
+  thu:REST, fri:FRI_F3_OTHER,
   sat:satBlock('taper',550,50,50,'Racetempo bibehållen','Nedtrappning'),
   sun:REST
 }, note:"Volym halveras, farten hålls. Bygger direkt bro till Race Week."};
@@ -731,7 +736,7 @@ WEEKS[15] = {n:15, days:{
   fri:{name:"RACE DAY", tag:'race', dow:'Fre', purpose:"Hyrox Men Doubles Open · Strawberry Arena, Stockholm", blocks:[{t:"", d:"Det här är racet. Allt ni behöver är redan byggt."}]},
   sat:{name:"Vila / återhämtning", tag:'rest', dow:'Lör', purpose:"", blocks:[{t:"", d:"Fira!"}]},
   sun:{name:"Vila / återhämtning", tag:'rest', dow:'Sön', purpose:"", blocks:[]}
-}, note:"Taper-vecka. Race fredag 11 december."};
+}, note:"Race week! Vi trappar ner volymen och förbereder oss för att kunna ge 100% på raec day."};
 
 /* ================= RENDER ================= */
 function todayProgramWeek(){
