@@ -496,11 +496,11 @@ const PHASES = [
   {id:'f1', tag:'p-f1', label:'Fas 1', name:'Grundkapacitet', weeks:[1,6],
     purpose:"Bygga en stabil aerob och hyrox-specifik grund innan vi lägger på fart och tyngd. Vi tränar i kontrollerad intensitet och fokuserar på att sätta rörelser och teknik. De första sex veckorna är fundamentet som resten av träningsperioden vilar på."},
   {id:'f2', tag:'p-f2', label:'Fas 2', name:'Trötta ben & högre pulszoner', weeks:[7,10],
-    purpose:"Höja intensitet och volym med fas 1 som grund. Vi går bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
+    purpose:"Höja intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
   {id:'f3', tag:'p-f3', label:'Fas 3', name:'Race prep', weeks:[11,14],
-    purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 . Vi rör oss mot faktiskt racetempo, testar hela racets känsla två gånger för att bygga mental och fysisk raceförmåga."},
+    purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 med fokus på att bygga mental och fysisk raceförmåga. Vi går mot att jobba i tävlingstempo under ett helt race och testar hela racets känsla i två simuleringar.},
   {id:'rw', tag:'p-rw', label:'Race week', name:'Taper & race', weeks:[15,15],
-    purpose:"Sista veckan. Volym ner, skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena."}
+    purpose:"Sista veckan! Vi sänker volymen men skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena."}
 ];
 
 function phaseOfWeek(w){
@@ -510,17 +510,17 @@ function phaseOfWeek(w){
 
 // ---- shared day fragments ----
 const MON_F1 = (min)=>({
-  name:"Lätt löpning + valfri teknik", tag:'easy', dow:'Mån',
-  purpose:"Bygga aerob volym helt utan stress, samtidigt som veckans kommande stationer får en lätt förhandsvisning.",
+  name:"Lätt löpning + stationsteknik", tag:'easy', dow:'Mån',
+  purpose:"Bygga aerob volym och jobba in teknik i hyroxstationerna.",
   blocks:[
-    {t:"Uppvärmning", d:"5 min promenad/lätt jogg + rörlighet (höftöppnare, axelcirklar)"},
+    {t:"Uppvärmning", d:"5 min lätt jogg + rörlighet"},
     {t:"Block 1 — Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
-    {t:"Block 2 — Teknik (valfritt, 15–20 min)", d:"Förhandsvisa 2–3 av veckans stationer, halva veckans volym, ingen tidtagning — ren teknik."}
+    {t:"Block 2 — Teknik (15–20 min, RPE 3-4)", d:"Every minute on the minute - 20 sek arbete / 40 sek vila - Burpees to plate / walking lunges / wall balls"}
   ]
 });
 const MON_F2 = (min)=>({
-  name:"Lätt löpning + valfri teknik", tag:'easy', dow:'Mån',
-  purpose:"Oförändrad från Fas 1 — ren aerob volym, ingen stress. Den här dagen ska aldrig kännas som ett kvalitetspass.",
+  name:"Lätt löpning + stationsteknik", tag:'easy', dow:'Mån',
+  purpose:"Oförändrad från Fas 1 — ren aerob volym, ingen stress på kroppen. Den här dagen ska aldrig kännas som ett kvalitetspass.",
   blocks:[
     {t:"Uppvärmning", d:"5 min promenad/lätt jogg + rörlighet"},
     {t:"Block 1 — Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
@@ -529,11 +529,11 @@ const MON_F2 = (min)=>({
 });
 const TORS_STYRKA_BEN = {
   name:"Styrka, underhåll", tag:'strength', dow:'Tors',
-  purpose:"Bibehålla den maxstyrka Simon redan har, så den aldrig blir en begränsande faktor — utan att stjäla återhämtning från kvalitetspassen.",
+  purpose:"Bibehålla maxstyrka utan att stjäla återhämtning från kvalitetspassen.",
   blocks:[
     {t:"Uppvärmning", d:"5–10 min allmän + specifik för dagens lyft"},
-    {t:"Block 1 — 3×8", d:"Knäböj · Marklyftsvariant · Bänkpress eller axelpress · Rodd. Alltid minst 3–4 reps kvar i tanken (RIR 3–4)."},
-    {t:"Progression", d:"Liten viktökning (2,5–5%) när samtliga set kan köras med RIR 3–4 bibehållet — annars ligg kvar. Underhåll, inte ett styrkeblock."}
+    {t:"Block 1 — 3×8", d:"Knäböj · Marklyftsvariant · Bänkpress · Axelpress · Skivstångsrodd. Alltid minst 3–4 reps kvar i tanken (RIR / Reps in reserve 3–4)."},
+    {t:"Progression", d:"Liten viktökning (2,5–5%) när samtliga set kan köras med RIR 3–4 bibehållet — annars ligg kvar på samma vikt. Vi ska inte bygga maxstyrka."}
   ]
 };
 const TORS_STYRKA_OVERKROPP = {
@@ -547,13 +547,13 @@ const TORS_STYRKA_OVERKROPP = {
 };
 const SAT_EASY_F1 = {
   name:"Valfri lätt aktivitet", tag:'easy', dow:'Lör',
-  purpose:"Extra aerob volym för den som vill och orkar — aldrig ett krav.",
-  blocks:[{t:"Fritt val", d:"Löpning 30–90 min, RPE ≤4, efter känsla. Om benen känns tunga men träningssuget finns: byt till cykel eller skierg — samma låga intensitet, mindre belastning."}]
+  purpose:"Tid för att bygga extra aerob kapacitet när tid och vilja finns",
+  blocks:[{t:"Fritt val", d:"Löpning 30–90 min, RPE ≤4, efter känsla. Om benen känns tunga men träningssuget finns: byt till cykel eller skierg med samma låga intensitet"}]
 };
 const WEEKEND_EASY_F2 = {
   name:"Valfri lugn cardio", tag:'easy', dow:'Lör/Sön',
-  purpose:"Extra aerob volym utan att belasta löpspecifika strukturer ytterligare — benen bär redan mycket denna fas.",
-  blocks:[{t:"Fritt val", d:"Jogg, skierg, cykel eller rowerg, 30–60 min, RPE ≤4. Aldrig ett krav."}]
+  purpose:"Extra aerob volym utan att belasta löpspecifika strukturer ytterligare. Benen bär redan mycket denna fas.",
+  blocks:[{t:"Fritt val", d:"Skierg, cykel eller rowerg, 30–60 min, RPE ≤4."}]
 };
 const REST = {name:"Vila", tag:'rest', dow:'', blocks:[]};
 
@@ -562,16 +562,17 @@ function hyroxBlock(dow, label, order, running, stationsPct, tempo, tempoDesc, s
     name:label, tag:'quality', dow:dow,
     purpose: dow==='Tis'
       ? "Introducera löpning-till-station-växlingen i kontrollerat tempo."
-      : "Samma logik, andra rörelsemönster — så hela stationsbiblioteket är täckt varje vecka.",
+      : "Samma logik som pass 1 men med resterande stationer",
     blocks:[
-      {t:"Uppvärmning", d:"10 min stegrande löpning + dynamisk rörlighet + en genomkörning av varje station"},
-      {t:"Format", d:"4 varv, löpning → station, i racets ordning: "+order},
-      {t:"Tempo", d:tempo+" ("+tempoDesc+")"},
+      {t:"Uppvärmning", d:"10 min löpning + dynamisk rörlighet + en genomkörning av ett par stationer"},
+      {t:"Huvudblock", d:"4 varv, från löpning till station i racets ordning: "+order},
+      {t:"Intensitet", d:tempo+" ("+tempoDesc+")"},
+      {t:"Vikt", d:"Full tävlingsvikt"},
     ],
     table:{
       headers:["Löpn/varv"].concat(Object.keys(statVals)),
       row:[running+" m"].concat(Object.values(statVals)),
-      note: stationsPct?("Stationsvolym: "+stationsPct):null
+      note: stationsPct?("Stationsvolym: "+stationsPct.replace(/^stationer\s*/i,'')):null
     }
   };
 }
@@ -588,10 +589,10 @@ const F1_BLOCKS = {
 function f1Week(n, b){
   return {n, days:{
     mon: MON_F1(b.mon),
-    tue: hyroxBlock('Tis','Hyroxblock 1 · LT1','Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, 'LT1', 'RPE 5–6, ~70–80% maxpuls, kontrollerad teknik, aldrig maxfart', {Skierg:b.skierg+' m', 'Sled Push':b.sledpush, 'Sled Pull':b.sledpull, BBJ:b.bbj}),
+    tue: hyroxBlock('Tis','Hyroxpass 1','Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, 'LT1', 'RPE 5–6, ~70–80% maxpuls, kontrollerad teknik, aldrig maxfart', {Skierg:b.skierg+' m', 'Sled Push':b.sledpush, 'Sled Pull':b.sledpull, BBJ:b.bbj}),
     wed: REST,
     thu: TORS_STYRKA_BEN,
-    fri: hyroxBlock('Fre','Hyroxblock 2 · LT1','Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, 'LT1', 'RPE 5–6, ~70–80% maxpuls, kontrollerad teknik, aldrig maxfart', {Row:b.row+' m', 'Farmers Carry':b.farmers, 'Sandbag Lunges':b.lunges, 'Wall Balls':b.wb}),
+    fri: hyroxBlock('Fre','Hyroxpass 2','Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, 'LT1', 'RPE 5–6, ~70–80% maxpuls, kontrollerad teknik, aldrig maxfart', {Row:b.row+' m', 'Farmers Carry':b.farmers, 'Sandbag Lunges':b.lunges, 'Wall Balls':b.wb}),
     sat: SAT_EASY_F1,
     sun: REST
   }};
@@ -617,7 +618,7 @@ Object.keys(F2).forEach(k=>{
     fri: hyroxBlock('Fre','Hyroxblock 2 · '+(n===10?'Deload':'LT2'),'Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Row:b.row+' m','Farmers Carry':b.farmers,'Sandbag Lunges':b.lunges,'Wall Balls':b.wb}),
     sat: WEEKEND_EASY_F2,
     sun: WEEKEND_EASY_F2
-  }, note: n===10 ? "Deload-vecka. Kontrollsumma: 8 löpsegment × 1100 m = 8,8 km LT1-tempo denna vecka — samma volym Sim 1 möter i v11, fast nu i högre fart." : null };
+  }, note: n===10 ? "Deload-vecka. Vi sänker volymen för att låta kroppen återhämta sig innan en intensiv träningsperiod." : null };
 });
 
 // Fas 3: v11-14 — Mon/Tue/Thu/Fri identical, Wed + Sat vary per week
@@ -627,6 +628,7 @@ const MON_F3 = {
   blocks:[
     {t:"Block 1", d:"50 min löpning, samma tempo som tidigare måndagar (RPE 3–4, ≤65% maxpuls)"},
     {t:"Block 2", d:"Direkt därefter: 100 wall balls, för tid, tävlingsvikt"},
+    {t:"Vikt", d:"Full tävlingsvikt"},
     {t:"Progression", d:"Identisk vecka till vecka — progressionen syns i sjunkande tid, inte stigande volym. Notera tiden varje gång."}
   ]
 };
@@ -650,8 +652,9 @@ function wedBlock(pctNum, run, tempo, note){
     name:"Hyroxblock 1–4"+(note?(' — '+note):''), tag:'quality', dow:'Ons',
     purpose: note==='Block A' ? "Del A av veckans delade toppass — full volym, första fyra stationerna." : "Baslinje som inte staplar på lördagens tunga pass.",
     blocks:[
-      {t:"Format", d:"4 varv, löpning "+run+" m/varv → Skierg → Sled Push → Sled Pull → Burpee Broad Jumps"},
-      {t:"Tempo", d:tempo}
+      {t:"Huvudblock", d:"4 varv, löpning "+run+" m/varv → Skierg → Sled Push → Sled Pull → Burpee Broad Jumps"},
+      {t:"Tempo", d:tempo},
+      {t:"Vikt", d:"Full tävlingsvikt"}
     ],
     table:{headers:["Löpn/varv","Skierg","Sled Push","Sled Pull","BBJ"], row:[run+" m", Math.round(1000*f)+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", Math.round(80*f)+" m"], note:"Stationsvolym: "+pctNum+"%"}
   };
@@ -665,7 +668,8 @@ function satBlock(kind, run8, runPct, stationPct, tempo, note){
     blocks:[
       {t:"Löpning", d: (kind==='blockB' ? "4 × "+run8+" m" : "8 × "+run8+" m") + (runPct<100 ? "  ("+runPct+"% av full distans)" : "  (full distans)")},
       {t:"Tempo", d:tempo},
-      {t:"Stationer", d:"Full tävlingsvikt, "+stationPct+"% volym" + (kind==='blockB' ? " — Row · Farmers Carry · Sandbag Lunges · Wall Balls" : " — alla 8 stationer")}
+      {t:"Vikt", d:"Full tävlingsvikt"},
+      {t:"Stationer", d:stationPct+"% volym" + (kind==='blockB' ? " — Row · Farmers Carry · Sandbag Lunges · Wall Balls" : " — alla 8 stationer")}
     ]
   };
 }
