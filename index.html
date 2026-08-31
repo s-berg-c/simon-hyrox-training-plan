@@ -50,6 +50,7 @@
     align-items:center;
     justify-content:space-between;
   }
+  .topbar.hidden{display:none;}
   .brand{
     font-family:'Archivo',sans-serif;
     font-weight:800;
@@ -156,7 +157,7 @@
     letter-spacing:-0.01em;
   }
   .today-card{
-    background:var(--accent);
+    background:linear-gradient(135deg, #D6FF3F 0%, #EEFAA8 100%);
     border-radius:var(--radius-lg);
     padding:22px;
   }
@@ -982,6 +983,7 @@ function switchView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  document.querySelector('.topbar').classList.toggle('hidden', name==='home');
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.nav-btn').forEach(b=>{
@@ -992,6 +994,7 @@ document.querySelectorAll('.nav-btn').forEach(b=>{
 (function init(){
   const tw = todayProgramWeek();
   currentWeek = (!tw.beforeStart && !tw.afterEnd) ? tw.week : 1;
+  document.querySelector('.topbar').classList.add('hidden');
   renderHome();
   renderProgram();
   renderWeek();
