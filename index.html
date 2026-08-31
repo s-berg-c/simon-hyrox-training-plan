@@ -8,6 +8,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
+  /* DESIGNSYSTEM:
+     - Endast svart (--dark) och lime (--accent) som fyllda highlight-ytor.
+     - Vit text på svart, svart/ink-text på lime.
+     - Gradient (svart->mörkgrå, lime->blek lime) på stora ytor, flat färg
+       på små taggar/pills.
+     - Inga borders på kort — skugga eller ingenting istället.
+     - Kvalitet (lime) och Race/Sim (svart) är de enda "highlight"-dagarna.
+       Lätt och Styrka delar samma neutrala, låg-emphasis stil. */
+
   :root{
     --bg:#FAFAF5;
     --surface:#FFFFFF;
@@ -73,7 +82,7 @@
 
   /* ---------- Home: hero ---------- */
   .hero{
-    background:var(--dark);
+    background:linear-gradient(160deg, #1a1915 0%, #0c0b09 100%);
     color:#fff;
     border-radius:var(--radius-lg);
     padding:26px 24px 24px;
@@ -188,7 +197,7 @@
   /* ---------- Phase list (Program view) ---------- */
   .phase-card{
     background:var(--surface);
-    border:1px solid var(--line);
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
     border-radius:var(--radius-lg);
     padding:22px;
     margin-bottom:14px;
@@ -216,12 +225,12 @@
     font-size:11.5px;
     padding:6px 10px;
     border-radius:999px;
-    background:var(--bg);
-    border:1px solid var(--line);
+    background:var(--surface);
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
     cursor:pointer;
   }
-  .week-chip:hover{border-color:var(--ink);}
-  .week-chip.current{background:var(--accent); border-color:var(--accent); font-weight:600;}
+  .week-chip:hover{background:var(--bg);}
+  .week-chip.current{background:var(--accent); box-shadow:none; font-weight:600;}
 
   /* ---------- Week view ---------- */
   .week-picker{
@@ -235,12 +244,13 @@
     font-size:12px;
     padding:8px 13px;
     border-radius:999px;
-    border:1px solid var(--line);
+    border:none;
     background:var(--surface);
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
     cursor:pointer;
     white-space:nowrap;
   }
-  .wk-btn.active{background:var(--dark); color:#fff; border-color:var(--dark);}
+  .wk-btn.active{background:var(--dark); color:#fff; box-shadow:none;}
 
   .week-head{
     display:flex; justify-content:space-between; align-items:flex-end; margin:18px 0 6px;
@@ -250,7 +260,7 @@
   .week-phase-tag{
     display:inline-block; margin-top:6px; margin-bottom:18px;
     font-size:11.5px; font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);
-    background:var(--bg); border:1px solid var(--line); padding:5px 10px; border-radius:999px;
+    background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,0.06); padding:5px 10px; border-radius:999px;
   }
   .week-note{
     background:#FFF7DE; border:1px solid #F0E2A8; border-radius:var(--radius-md);
@@ -259,7 +269,7 @@
 
   .day-card{
     background:var(--surface);
-    border:1px solid var(--line);
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
     border-radius:var(--radius-md);
     margin-bottom:10px;
     overflow:hidden;
@@ -290,8 +300,8 @@
     border-radius:999px;
   }
   .tag-easy{background:#EFEEE6; color:var(--muted);}
-  .tag-quality{background:var(--accent); color:#333;}
-  .tag-strength{background:#EAE6F5; color:#5B4B93;}
+  .tag-quality{background:var(--accent); color:var(--ink);}
+  .tag-strength{background:#EFEEE6; color:var(--muted);}
   .tag-rest{background:transparent; color:var(--muted);}
   .tag-race{background:var(--dark); color:#fff;}
   .chev{color:var(--muted); font-size:12px; flex:0 0 auto;}
@@ -311,7 +321,7 @@
 
   /* ---------- Reference view ---------- */
   .ref-card{
-    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
+    background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,0.04); border-radius:var(--radius-lg);
     padding:22px; margin-bottom:14px;
   }
   .ref-card h3{font-family:'Archivo',sans-serif; font-size:18px; font-weight:800; margin:0 0 12px;}
@@ -330,9 +340,9 @@
   }
   .principle p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.55;}
   .goal-box{
-    background:var(--dark); color:#fff; border-radius:var(--radius-lg); padding:22px; margin-bottom:14px;
+    background:linear-gradient(160deg, #1a1915 0%, #0c0b09 100%); color:#fff; border-radius:var(--radius-lg); padding:22px; margin-bottom:14px;
   }
-  .goal-box .k{font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:0.06em;}
+  .goal-box .k{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em;}
   .goal-box p{font-size:15px; line-height:1.5; margin:10px 0 0; font-weight:500;}
 
   /* ---------- Bottom nav ---------- */
@@ -359,17 +369,19 @@
 
   @media (max-width:380px){
     .hero-count{font-size:64px;}
+    .home-heading{font-size:32px;}
   }
 
   /* ---------- Home: page heading ---------- */
   .home-heading{
     font-family:'Archivo',sans-serif;
     font-weight:900;
-    font-size:24px;
+    font-size:38px;
     letter-spacing:-0.02em;
-    line-height:1.2;
+    line-height:0.98;
     color:var(--ink);
-    margin:16px 0 10px;
+    margin:20px 0 18px;
+    text-wrap:balance;
   }
 
   /* ---------- Home: progress row inside hero ---------- */
@@ -871,7 +883,12 @@ function renderHome(){
     for(let di=0; di<tw.dowIdx; di++){
       if(WEEKS[tw.week].days[DOW_KEYS[di]].tag!=='rest') passCount++;
     }
-    progressRow.textContent = passCount+' pass bakom dig';
+    let totalPass = 0;
+    for(let w=1; w<=15; w++){
+      DOW_KEYS.forEach(dk=>{ if(WEEKS[w].days[dk].tag!=='rest') totalPass++; });
+    }
+    const remaining = totalPass - passCount;
+    progressRow.textContent = passCount+' bakom dig · '+remaining+' kvar till race day';
     progressRow.style.display='';
   } else {
     progressRow.style.display='none';
