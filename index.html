@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simon — Hyrox Stockholm</title>
+<title>Simon's Hyrox Training Plan </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -90,14 +90,6 @@
     position:relative;
     overflow:hidden;
   }
-  .hero-eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:rgba(255,255,255,0.55);
-    margin-bottom:14px;
-  }
   .hero-count{
     font-family:'Archivo',sans-serif;
     font-weight:900;
@@ -141,10 +133,30 @@
     flex:1;
     position:relative;
     cursor:pointer;
+    transition:transform 0.15s ease;
   }
   .band-seg .fill{position:absolute; inset:0;}
-  .band-seg.today .fill{box-shadow:inset 0 0 0 2px var(--ink);}
-  .band-seg.past .fill{opacity:0.45;}
+  .band-seg.today{
+    transform:scale(1.12);
+    z-index:2;
+    position:relative;
+  }
+  .band-seg.today .fill{
+    box-shadow:
+      inset 0 0 0 2px #fff,
+      inset 0 0 0 4px var(--ink);
+  }
+  .band-seg.past .fill{
+    background:repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 3px,
+      rgba(255,255,255,0.6) 3px, rgba(255,255,255,0.6) 6px
+    );
+  }
+  .band-seg.past{
+    border:1.5px solid var(--ink);
+    border-radius:2px;
+  }
   .band-legend{
     display:flex; align-items:center; gap:16px; margin-top:10px; flex-wrap:wrap;
   }
@@ -231,7 +243,13 @@
     cursor:pointer;
   }
   .week-chip:hover{opacity:0.8;}
-  .week-chip.current{box-shadow:inset 0 0 0 2px var(--accent); font-weight:600;}
+  .week-chip.current{
+    background:var(--dark);
+    color:#fff;
+    font-weight:700;
+    box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--accent);
+    transform:scale(1.08);
+  }
 
   /* ---------- Week view ---------- */
   .week-picker{
@@ -264,8 +282,12 @@
     background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,0.06); padding:5px 10px; border-radius:999px;
   }
   .week-note{
-    background:#FFF7DE; border:1px solid #F0E2A8; border-radius:var(--radius-md);
-    padding:12px 14px; font-size:12.5px; color:#6B5A12; margin-bottom:18px; line-height:1.5;
+    background:var(--dark); border-radius:var(--radius-md);
+    padding:12px 14px; font-size:12.5px; color:rgba(255,255,255,0.85); margin-bottom:18px; line-height:1.5;
+  }
+  .week-note-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:0.07em; color:var(--accent); margin-bottom:6px;
   }
 
   .day-card{
@@ -332,7 +354,7 @@
   .principle{display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line);}
   .principle:first-of-type{border-top:none; padding-top:0;}
   .principle .n{
-    font-family:'Archivo',sans-serif; font-weight:900; font-size:15px; color:var(--accent-deep);
+    font-family:'Archivo',sans-serif; font-weight:900; font-size:15px; color:var(--ink);
     flex:0 0 auto; width:20px;
   }
   .principle p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.55;}
@@ -401,6 +423,7 @@
     margin-top:12px;
   }
   .coach-note-label{
+    font-family:'IBM Plex Mono',monospace;
     font-size:10px;
     text-transform:uppercase;
     letter-spacing:0.07em;
@@ -420,8 +443,8 @@
 
   <div class="topbar">
     <div>
-      <div class="brand">Simon <span class="dot">·</span> Hyrox Stockholm</div>
-      <div class="brand-sub">Men Doubles Open — Strawberry Arena</div>
+      <div class="brand">Simons väg mot Hyrox Stockholm</div>
+      <div class="brand-sub">Men Doubles Open <span class="dot">·</span> 11 december</div>
     </div>
   </div>
 
@@ -429,7 +452,6 @@
   <div class="view active" id="view-home">
     <h1 class="home-heading">Simons väg mot Hyrox Stockholm</h1>
     <div class="hero">
-      <div class="hero-eyebrow" id="home-eyebrow">Laddar…</div>
       <div class="hero-count" id="home-count">--</div>
       <div class="hero-count-label" id="home-count-label">dagar kvar</div>
       <div id="home-progress-row" class="hero-progress-row"></div>
@@ -441,7 +463,7 @@
 
     <div class="band-wrap">
       <div class="band-label">
-        <span class="l1">Hela programmet</span>
+        <span class="l1">Tidslinje</span>
         <span class="l2" id="band-current">V.–</span>
       </div>
       <div class="band" id="band"></div>
@@ -452,15 +474,16 @@
       </div>
     </div>
 
-    <div class="section-title">Idag</div>
+    <div class="section-title">Dagens pass</div>
     <div id="home-today"></div>
     <div id="home-coach-note"></div>
   </div>
 
   <!-- ============ PROGRAM ============ -->
   <div class="view" id="view-program">
-    <div class="section-title" style="margin-top:20px;">Programmet</div>
-    <p class="program-intro">Bygga en stark grund för hybridträning med målet att genomföra Hyrox Men Doubles Open i Stockholm, fredag 11 december.</p>
+    <div class="section-title" style="margin-top:20px;">Syfte och mål</div>
+    <p class="program-intro">Programmets syfte är att bygga en stark grund för hybridträning med målet att genomföra Hyrox Men Doubles Open i Stockholm, fredag 11 december.</p>
+      <div class="section-title" style="margin-top:20px;">Struktur</div>
     <div id="program-list"></div>
   </div>
 
@@ -479,21 +502,19 @@
 
   <!-- ============ REFERENS ============ -->
   <div class="view" id="view-ref">
-    <div class="section-title" style="margin-top:20px;">Referenser</div>
-
     <div class="ref-card">
       <h3>Coachprinciper</h3>
-      <div class="principle"><div class="n">01</div><p>Vila vid känning av sjukdom. Hämta inte igen det med hårdare träning resten av veckan.</p></div>
-      <div class="principle"><div class="n">02</div><p>Kapacitet och fitness byggs över tid. Vi programmerar för racet och stressar inte prestation. Vi bygger en grund att stå på för fortsatt träning i många år framåt.</p></div>
-      <div class="principle"><div class="n">03</div><p>Lyssna på kroppen. Om du efter uppvärmning känner dig för trött för dagens pass — testa att köra 50% eller gå hem och vila.</p></div>
-      <div class="principle"><div class="n">04</div><p>Sluta pusha om något gör ont under passet. Känningar är ok. Smärta — stopp, direkt.</p></div>
+      <div class="principle"><div class="n">01</div><p>Kapacitet och fitness byggs över tid. Vi programmerar för racet men stressar inte prestation. Vi bygger en grund att stå på för fortsatt träning i många år framåt.</p></div>
+      <div class="principle"><div class="n">02</div><p>Vila vid känning av sjukdom. Hämta inte igen det med hårdare eller mer träning resten av veckan.</p></div>
+      <div class="principle"><div class="n">03</div><p>Lyssna på kroppen. Om du efter uppvärmning känner dig för trött för dagens pass: testa att köra 50% eller vila för dagen.</p></div>
+      <div class="principle"><div class="n">04</div><p>Sluta genast om något gör ont under passet. Känningar är ok. Vid smärta är det stopp, direkt.</p></div>
       <div class="principle"><div class="n">05</div><p>Om en känning inte är borta inom 48–72 timmar: Boka fysio/läkare innan nästa hårda pass.</p></div>
     </div>
 
     <div class="ref-card">
-      <h3>Varför polarisering?</h3>
+      <h3>Polariserad träning</h3>
       <p style="font-size:13px; color:var(--ink-soft); line-height:1.55; margin:0;">
-        Vi kör lätta dagar för att kunna köra hårdare de dagar det räknas. Går man in trött i ett kvalitetspass ger passet mindre tillbaka: tekniken blir sämre, farten lägre, stimulansen svagare. Balansen mellan prestation och återhämtning är inte en kompromiss, det är själva motorn i hur kapacitet byggs.
+        Alla pass har ett tydligt syfte. Vi kör lätta dagar för att träna hjärtat och bygga muskelminne. Hårda dagar flyttar mjölksyratröskeln, ökar muskulär kapacitet och tränar vår mentala styrka. Och kom ihåg: att vila inte är passivitet - det är då kroppen får tid att bygga upp det vi brutit ner under träningen. Att hålla tillbaka är en konst.
       </p>
     </div>
 
@@ -502,27 +523,27 @@
       <table class="ref-table">
         <tr><th>RPE</th><th>Känsla</th></tr>
         <tr><td class="k">1–3</td><td>Mycket lätt, återhämtning, samtalstakt utan ansträngning</td></tr>
-        <tr><td class="k">4–6</td><td>Kontrollerad ansträngning, andas tyngre men kan prata i korta meningar</td></tr>
-        <tr><td class="k">7–8</td><td>Tungt, fokuserad andning, svårt att prata</td></tr>
-        <tr><td class="k">9</td><td>Mycket tungt, race-tempo, endast korta meningar möjliga</td></tr>
-        <tr><td class="k">10</td><td>Max, allt du har</td></tr>
+        <tr><td class="k">4–6</td><td>Kontrollerad ansträngning. Andningen är tyngre men du kan prata i korta meningar. Ett tempo du kan hålla i flera timmar.</td></tr>
+        <tr><td class="k">7–8</td><td>Tungt men fortfarande kontrollerat. Intensivare andning, obekvämare att prata i längre meningar. Ett tempo du kan hålla i max 1h.</td></tr>
+        <tr><td class="k">9</td><td>Mycket tungt, race-tempo, svårt att prata.</td></tr>
+        <tr><td class="k">10</td><td>Max, allt du har, det går inte att prata samtidigt.</td></tr>
       </table>
     </div>
 
     <div class="ref-card">
-      <h3>RIR — Reps In Reserve</h3>
+      <h3>RIR - Reps In Reserve</h3>
       <p style="font-size:13px; color:var(--ink-soft); line-height:1.55; margin:0 0 14px;">RIR betyder hur många reps du hade kvar i tanken när du avslutade setet — inte hur hårt du kört, utan hur mycket mer du <em>hade kunnat</em> köra. Det är ett precist verktyg för att reglera intensitet i styrketräningen utan att gå till failure.</p>
       <table class="ref-table">
         <tr><th>RIR</th><th>Innebär</th></tr>
-        <tr><td class="k">RIR 0</td><td>Max — ingenting kvar. Sista repen var verkligen sista repen.</td></tr>
-        <tr><td class="k">RIR 1</td><td>Hade klarat 1 rep till — mycket krävande.</td></tr>
-        <tr><td class="k">RIR 2</td><td>Hade klarat 2 rep till — krävande men kontrollerbart.</td></tr>
-        <tr><td class="k">RIR 3–4</td><td>Kontrollerat och stabilt. Det är här vi jobbar i detta program — tillräcklig stimulans utan att gå till failure och utan att stjäla återhämtning från konditionspassen.</td></tr>
+        <tr><td class="k">RIR 0</td><td>Max. Du har ingenting kvar att ge.</td></tr>
+        <tr><td class="k">RIR 1</td><td>Hade klarat 1 rep till. Mycket krävande.</td></tr>
+        <tr><td class="k">RIR 2</td><td>Hade klarat 2 rep till. Krävande men kontrollerat.</td></tr>
+        <tr><td class="k">RIR 3–4</td><td>Kontrollerat och stabilt. Det är här vi jobbar i detta program - tillräcklig stimulans utan att gå till failure och utan att stjäla återhämtning från konditionspassen.</td></tr>
       </table>
     </div>
 
     <div class="ref-card">
-      <h3>LT1 / LT2</h3>
+      <h3>Ansträngningstabell</h3>
       <table class="ref-table">
         <tr><th>Nivå</th><th>%maxpuls</th><th>RPE</th><th>Känns som</th></tr>
         <tr><td class="k">Zon 1–2</td><td>&lt;70%</td><td>3–4</td><td>Lätt, hela meningar</td></tr>
@@ -541,7 +562,7 @@
     <button class="nav-btn active" data-view="home"><span class="nav-dot"></span><span>Hem</span></button>
     <button class="nav-btn" data-view="program"><span class="nav-dot"></span><span>Program</span></button>
     <button class="nav-btn" data-view="week"><span class="nav-dot"></span><span>Vecka</span></button>
-    <button class="nav-btn" data-view="ref"><span class="nav-dot"></span><span>Referens</span></button>
+    <button class="nav-btn" data-view="ref"><span class="nav-dot"></span><span>Referenser</span></button>
   </div>
 </div>
 
@@ -560,11 +581,11 @@ function fmtRange(startIdx){
 
 const PHASES = [
   {id:'f1', tag:'p-f1', label:'Fas 1', name:'Grundkapacitet', weeks:[1,6],
-    purpose:"Fas 1 bygger en stabil aerob och hyrox-specifik grund innan vi lägger på fart och tyngd. Vi tränar i kontrollerad intensitet och fokuserar på att sätta rörelser och teknik. De första sex veckorna är fundamentet som resten av träningsperioden vilar på."},
+    purpose:"Fas 1 bygger en stabil aerob och Hyrox-specifik grund innan vi lägger på fart och intensitet i fas 2. Vi tränar i kontrollerad intensitet och fokuserar på att sätta rörelser och teknik samt att jobba uppemot 90 minuter kontinuerligt. De första sex veckorna är fundamentet som resten av träningsperioden vilar på."},
   {id:'f2', tag:'p-f2', label:'Fas 2', name:'Trötta ben & högre pulszoner', weeks:[7,10],
-    purpose:"Fas 2 höjer intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% och byggs upp igen - inte för att vi backar, utan för att bygga upp volymen igen under högre intensitet - mot den första fulla simuleringen i fas 3."},
+    purpose:"Fas 2 höjer intensitet och volym med fas 1 som grund. Vi bygger kapacitet att jobba kring mjölksyratröskeln på kvalitetspassen och lär kroppen springa bra även när  benen är trötta från stationsarbete. Det är precis den förmågan som avgör hur ett Hyroxrace känns i andra halvan. Stationsvolymen reduceras medvetet till 50% i början av fas 2 och byggs upp igen för att vänja kroppen vid den högre intensiteten och samtidigt mimimera risken för skador."},
   {id:'f3', tag:'p-f3', label:'Fas 3', name:'Race prep', weeks:[11,14],
-    purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 med fokus på att bygga mental och fysisk raceförmåga. Vi går mot att jobba i tävlingstempo under ett helt race och testar hela racets känsla i två simuleringar."},
+    purpose:"Här slipar vi till det vi byggt upp i Fas 1 och 2 med fokus på att bygga mental och fysisk raceförmåga. Vi går mot att jobba i tävlingstempo under ett helt race och testar racekänslan i två simuleringar."},
   {id:'rw', tag:'p-rw', label:'Race week', name:'Race week!', weeks:[15,15],
     purpose:"Sista veckan. Vi sänker volymen men skärpan och intensiteten är kvar. Kroppen ska möta startlinjen fräsch och uppladdad. Fredag den 11 december kör vi: Hyrox Men Doubles Open, Strawberry Arena!"}
 ];
@@ -577,11 +598,11 @@ function phaseOfWeek(w){
 // ---- shared day fragments ----
 const MON_F1 = (min)=>({
   name:"Lätt löpning + stationsteknik", tag:'easy', dow:'Mån',
-  purpose:"Bygga aerob volym och jobba in teknik i hyroxstationerna.",
+  purpose:"Bygga aerob volym och bygga in Hyrox grundrörelser i ditt muskelminne.",
   blocks:[
     {t:"Uppvärmning", d:"5 min lätt jogg + rörlighet"},
-    {t:"Block 1 — Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
-    {t:"Block 2 — Teknik (15–20 min, RPE 3-4)", d:"Every minute on the minute - 20 sek arbete / 40 sek vila - Burpees to plate / walking lunges / wall balls"}
+    {t:"Block 1: Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
+    {t:"Block 2: Teknik", d:"20 min - Every minute on the minute - 20 sek arbete / 40 sek vila - Burpees to plate / Walking Lunges / Wall Balls"}
   ]
 });
 const MON_F2 = (min)=>({
@@ -589,8 +610,8 @@ const MON_F2 = (min)=>({
   purpose:"Oförändrad från Fas 1 — ren aerob volym, ingen stress på kroppen. Den här dagen ska aldrig kännas som ett kvalitetspass.",
   blocks:[
     {t:"Uppvärmning", d:"5 min promenad/lätt jogg + rörlighet"},
-    {t:"Block 1 — Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
-    {t:"Block 2 — Teknik (valfritt)", d:"Oförändrat från Fas 1"}
+    {t:"Block 1: Löpning", d:min+" min, zon 1–2, RPE 3–4, puls ≤65% av maxpuls"},
+    {t:"Block 2: Teknik (valfritt)", d:"Oförändrat från Fas 1"}
   ]
 });
 const TORS_STYRKA_BEN = {
@@ -598,7 +619,7 @@ const TORS_STYRKA_BEN = {
   purpose:"Bibehålla maxstyrka utan att stjäla återhämtning från kvalitetspassen.",
   blocks:[
     {t:"Uppvärmning", d:"5–10 min allmän + specifik för dagens lyft"},
-    {t:"Block 1 — 3×8", d:"Knäböj · Marklyftsvariant · Bänkpress · Axelpress · Skivstångsrodd. Alltid minst 3–4 reps kvar i tanken (RIR / Reps in reserve 3–4)."},
+    {t:"Block 1: 3×8", d:"Knäböj · Marklyftsvariant · Bänkpress · Axelpress · Skivstångsrodd. Alltid minst 3–4 reps kvar i tanken (RIR / Reps in reserve 3–4)."},
     {t:"Progression", d:"Liten viktökning (2,5–5%) när samtliga set kan köras med RIR 3–4 bibehållet — annars ligg kvar på samma vikt. Vi ska inte bygga maxstyrka."}
   ]
 };
@@ -607,8 +628,8 @@ const TORS_STYRKA_OVERKROPP = {
   purpose:"Bibehålla överkroppsstyrka. Benen vilar - de bär redan tisdag/fredags stigande belastning.",
   blocks:[
     {t:"Uppvärmning", d:"5–10 min allmän + specifik"},
-    {t:"Block 1 — 3×8", d:"Bänkpress eller axelpress · Rodd · Latsdrag eller pull-ups · Valfri core. RIR 3–4. Inga tunga knäböj/marklyft denna period."},
-    {t:"Block 2 — Valfritt", d:"30 min lugn jogg eller valfri cardio, RPE ≤4 — ren aerob påfyllning, ingen kvalitet."}
+    {t:"Block 1: 3×8", d:"Bänkpress eller axelpress · Rodd · Latsdrag eller pull-ups · Valfri core. RIR 3–4. Inga tunga knäböj/marklyft denna period."},
+    {t:"Block 2: Valfritt", d:"30 min lugn jogg eller valfri cardio, RPE ≤4 — ren aerob påfyllning, ingen kvalitet."}
   ]
 };
 const SAT_EASY_F1 = {
@@ -623,7 +644,8 @@ const WEEKEND_EASY_F2 = {
 };
 const REST = {name:"Vila", tag:'rest', dow:'', blocks:[]};
 
-function hyroxBlock(dow, label, order, running, stationsPct, tempo, tempoDesc, statVals){
+function hyroxBlock(dow, label, order, running, stationsPct, tempo, tempoDesc, statVals, runBase){
+  runBase = runBase || 1000;
   return {
     name:label, tag:'quality', dow:dow,
     purpose: dow==='Tis'
@@ -638,7 +660,7 @@ function hyroxBlock(dow, label, order, running, stationsPct, tempo, tempoDesc, s
     table:{
       headers:["Löpn/varv"].concat(Object.keys(statVals)),
       row:[running+" m"].concat(Object.values(statVals)),
-      note: stationsPct?("Stationsvolym: "+stationsPct.replace(/^stationer\s*/i,'')):null
+      note: stationsPct?("Stationsvolym: "+stationsPct.replace(/^stationer\s*/i,'')+"<br>Löpvolym: "+Math.round(running/runBase*100)+"%"):null
     }
   };
 }
@@ -648,7 +670,7 @@ const WEEKS = [];
 
 // Fas 1 blocks: v1-2 (50%), v3-4 (75%), v5-6 (100%)
 const F1_BLOCKS = {
-  '1-2':{pct:'50%', run:500, mon:50, skierg:500, sledpush:'25 m', sledpull:'25 m', bbj:'40 m', row:500, farmers:'100 m', lunges:'50 m', wb:'50 st'},
+  '1-2':{pct:'50%', run:500, mon:'50-60', skierg:500, sledpush:'25 m', sledpull:'25 m', bbj:'40 m', row:500, farmers:'100 m', lunges:'50 m', wb:'50 st'},
   '3-4':{pct:'75%', run:750, mon:60, skierg:750, sledpush:'37,5 m', sledpull:'37,5 m', bbj:'60 m', row:750, farmers:'150 m', lunges:'75 m', wb:'75 st'},
   '5-6':{pct:'100%', run:1000, mon:70, skierg:1000, sledpush:'50 m', sledpull:'50 m', bbj:'80 m', row:1000, farmers:'200 m', lunges:'100 m', wb:'100 st'}
 };
@@ -669,19 +691,19 @@ function f1Week(n, b){
 
 // Fas 2: v7-10, running continuous 1000->1100, stations 50/65/85/100
 const F2 = {
-  7:{run:1000, pct:'50%', mon:70, skierg:500, sledpush:'25 m', sledpull:'25 m', bbj:'40 m', row:500, farmers:'100 m', lunges:'50 m', wb:'50 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls — "ett tempo du kan hålla i max 1h"'},
-  8:{run:1035, pct:'65%', mon:70, skierg:650, sledpush:'32,5 m', sledpull:'32,5 m', bbj:'52 m', row:650, farmers:'130 m', lunges:'65 m', wb:'65 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls'},
-  9:{run:1070, pct:'85%', mon:75, skierg:850, sledpush:'42,5 m', sledpull:'42,5 m', bbj:'68 m', row:850, farmers:'170 m', lunges:'85 m', wb:'85 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls'},
-  10:{run:1100, pct:'100%', mon:75, skierg:1000, sledpush:'50 m', sledpull:'50 m', bbj:'80 m', row:1000, farmers:'200 m', lunges:'100 m', wb:'100 st', tempo:'LT1 (deload)', tempoDesc:'RPE 5–6 — samma volym som v9 nådde, farten sänks. Deload-principen: behåll exponeringen, sänk farten.'}
+  7:{run:1000, pct:'~50%', mon:70, skierg:500, sledpush:'25 m', sledpull:'25 m', bbj:'40 m', row:500, farmers:'100 m', lunges:'50 m', wb:'50 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls — "ett tempo du kan hålla i max 1h"'},
+  8:{run:1000, pct:'~65%', mon:70, skierg:650, sledpush:'37,5 m', sledpull:'37,5 m', bbj:'55 m', row:650, farmers:'125 m', lunges:'65 m', wb:'65 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls'},
+  9:{run:1100, pct:'70-85%', mon:75, skierg:850, sledpush:'37,5 m', sledpull:'37,5 m', bbj:'70 m', row:850, farmers:'160 m', lunges:'85 m', wb:'85 st', tempo:'LT2', tempoDesc:'RPE 7–8, ~80–90% maxpuls'},
+  10:{run:1100, pct:'100%', mon:75, skierg:1000, sledpush:'50 m', sledpull:'50 m', bbj:'80 m', row:1000, farmers:'200 m', lunges:'100 m', wb:'100 st', tempo:'LT1 (deload)', tempoDesc:'RPE 5–6 — samma volym som v9 men vi sänker farten för att underlätta återhämtning.'}
 };
 Object.keys(F2).forEach(k=>{
   const n=+k, b=F2[k];
   WEEKS[n] = {n, days:{
     mon: MON_F2(b.mon),
-    tue: hyroxBlock('Tis','Hyroxblock 1'+(n===10?' Deload': ""),'Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Skierg:b.skierg+' m','Sled Push':b.sledpush,'Sled Pull':b.sledpull, BBJ:b.bbj}),
+    tue: hyroxBlock('Tis','Hyroxpass 1'+(n===10?' Deload': ""),'Skierg → Sled Push → Sled Pull → Burpee Broad Jumps', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Skierg:b.skierg+' m','Sled Push':b.sledpush,'Sled Pull':b.sledpull, BBJ:b.bbj}, 1100),
     wed: REST,
     thu: TORS_STYRKA_OVERKROPP,
-    fri: hyroxBlock('Fre','Hyroxblock 2'+(n===10?' Deload': ""),'Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Row:b.row+' m','Farmers Carry':b.farmers,'Sandbag Lunges':b.lunges,'Wall Balls':b.wb}),
+    fri: hyroxBlock('Fre','Hyroxpass 2'+(n===10?' Deload': ""),'Row → Farmers Carry → Sandbag Lunges → Wall Balls', b.run, 'stationer '+b.pct, b.tempo, b.tempoDesc, {Row:b.row+' m','Farmers Carry':b.farmers,'Sandbag Lunges':b.lunges,'Wall Balls':b.wb}, 1100),
     sat: WEEKEND_EASY_F2,
     sun: WEEKEND_EASY_F2
   }, note: n===10 ? "Deload-vecka. Vi sänker volymen för att låta kroppen återhämta sig innan en intensiv träningsperiod." : null };
@@ -702,7 +724,7 @@ const TUE_F3 = {
   name:"Styrka överkropp + Zon 2", tag:'strength', dow:'Tis',
   purpose:"Bibehålla överkroppsstyrka, lägga till lätt aerob volym — utan att röra benen som redan bär veckans tunga dagar.",
   blocks:[
-    {t:"Block 1 — 3×8", d:"Bänkpress eller axelpress · Rodd · Latsdrag eller pull-ups · Valfri core. RIR 3–4."},
+    {t:"Block 1: 3×8", d:"Bänkpress eller axelpress · Rodd · Latsdrag eller pull-ups · Valfri core. RIR 3–4."},
     {t:"Block 2", d:"20 min cardio, zon 2, RPE 3–4 (löpning, cykel eller skierg — fritt val)"}
   ]
 };
@@ -727,7 +749,7 @@ function wedBlock(pctNum, run, tempo, note){
       {t:"Tempo", d:tempo},
       {t:"Vikt", d:"Full tävlingsvikt"}
     ],
-    table:{headers:["Löpn/varv","Skierg","Sled Push","Sled Pull","BBJ"], row:[run+" m", Math.round(1000*f)+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", Math.round(80*f)+" m"], note:"Stationsvolym: "+pctNum+"%"}
+    table:{headers:["Löpn/varv","Skierg","Sled Push","Sled Pull","BBJ"], row:[run+" m", Math.round(1000*f)+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", (50*f).toFixed(1).replace('.0','').replace('.',',')+" m", Math.round(80*f)+" m"], note:"Stationsvolym: "+pctNum+"%<br>Löpvolym: "+Math.round(run/1100*100)+"%"}
   };
 }
 function satBlock(kind, run8, runPct, stationPct, tempo, note){
@@ -783,7 +805,7 @@ WEEKS[15] = {n:15, days:{
   mon:{name:"Löpning + Wall Ball-test (50%)", tag:'easy', dow:'Mån', purpose:"Halva volymen av normalmallen — kroppen ska möta racet fräsch.",
     blocks:[{t:"Block 1", d:"25 min löpning, samma tempo (RPE 3–4)"},{t:"Block 2", d:"50 wall balls, för tid, tävlingsvikt"}]},
   tue:{name:"Styrka lätt (50%)", tag:'strength', dow:'Tis', purpose:"Halva volymen — aktivering, inte belastning.",
-    blocks:[{t:"Block 1 — 2×8", d:"Samma övningar som vanligt, ett set färre, RIR 4+"},{t:"Block 2", d:"10 min zon 2 cardio"}]},
+    blocks:[{t:"Block 1: 2×8", d:"Samma övningar som vanligt, ett set färre, RIR 4+"},{t:"Block 2", d:"10 min zon 2 cardio"}]},
   wed:{name:"Hel vila", tag:'rest', dow:'Ons', purpose:"", blocks:[]},
   thu:{name:"Shake-out run", tag:'easy', dow:'Tors', purpose:"Sista beröringen med löpning innan racet — hålla systemet igång, inget mer.",
     blocks:[{t:"Löpning", d:"20 min, RPE 2–3, riktigt lugnt"}]},
@@ -829,18 +851,14 @@ function renderHome(){
   document.getElementById('home-count').textContent = daysLeft>0?daysLeft:0;
   document.getElementById('home-count-label').textContent = daysLeft>0 ? "dagar kvar" : (daysLeft===0?"race day!":"racet är kört");
   const tw = todayProgramWeek();
-  const eyebrow = document.getElementById('home-eyebrow');
   const bandCurrent = document.getElementById('band-current');
   if(tw.beforeStart){
-    eyebrow.textContent = "Programmet startar "+START_DATE.toLocaleDateString('sv-SE',{day:'numeric',month:'long'});
     bandCurrent.textContent = "Startar snart";
   } else if(tw.afterEnd){
-    eyebrow.textContent = "Racet är kört";
     bandCurrent.textContent = "Klart";
   } else {
     const ph = phaseOfWeek(tw.week);
-    eyebrow.textContent = "Vecka "+tw.week+" av 15 — "+ph.label;
-    bandCurrent.textContent = "V."+tw.week+" · "+ph.label;
+    bandCurrent.textContent = "V."+tw.week+" av 15 · "+ph.label;
   }
 
   // today card
@@ -884,7 +902,7 @@ function renderHome(){
       DOW_KEYS.forEach(dk=>{ if(WEEKS[w].days[dk].tag!=='rest') totalPass++; });
     }
     const remaining = totalPass - passCount;
-    progressRow.textContent = passCount+' pass bakom dig · '+remaining+' pass kvar till race day';
+    progressRow.textContent = passCount+' genomförda pass · '+remaining+' pass kvar till race day';
     progressRow.style.display='';
   } else {
     progressRow.style.display='none';
@@ -898,7 +916,8 @@ function renderHome(){
     coachHolder.innerHTML='';
   }
 
-function bandColor(w){
+function bandColor(w, isPast){
+  if(isPast) return ''; // past weeks get their look entirely from .band-seg.past CSS
   if(w===15) return 'rgb(20,19,16)'; // race week — black
   const t = (w-1)/13; // 0 at week1, 1 at week14
   const from=[228,226,216], to=[214,255,63]; // light gray -> lime
@@ -910,9 +929,10 @@ function bandColor(w){
   const band = document.getElementById('band');
   band.innerHTML='';
   for(let w=1; w<=15; w++){
+    const isPast = !tw.beforeStart && w<tw.week;
     const seg = document.createElement('div');
-    seg.className='band-seg'+(!tw.beforeStart && !tw.afterEnd && w===tw.week?' today':'')+((!tw.beforeStart && w<tw.week)?' past':'');
-    seg.innerHTML='<div class="fill" style="background:'+bandColor(w)+'"></div>';
+    seg.className='band-seg'+(!tw.beforeStart && !tw.afterEnd && w===tw.week?' today':'')+(isPast?' past':'');
+    seg.innerHTML='<div class="fill" style="background:'+bandColor(w, isPast)+'"></div>';
     const ph = phaseOfWeek(w);
     seg.title='Vecka '+w+' — '+ph.label;
     seg.onclick=()=>{goWeek(w); switchView('week');};
@@ -968,7 +988,7 @@ function renderWeek(){
   document.getElementById('wk-phasetag').textContent = ph.label+' — '+ph.name;
 
   const noteHolder = document.getElementById('wk-note-holder');
-  noteHolder.innerHTML = wk.note ? '<div class="week-note">'+wk.note+'</div>' : '';
+  noteHolder.innerHTML = wk.note ? '<div class="week-note"><div class="week-note-label">Coach-notering</div>'+wk.note+'</div>' : '';
 
   const days = document.getElementById('wk-days');
   days.innerHTML='';
