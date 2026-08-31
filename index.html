@@ -359,6 +359,48 @@
   @media (max-width:380px){
     .hero-count{font-size:64px;}
   }
+
+  /* ---------- Home: page heading ---------- */
+  .home-heading{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:24px;
+    letter-spacing:-0.02em;
+    line-height:1.2;
+    color:var(--ink);
+    margin:16px 0 10px;
+  }
+
+  /* ---------- Home: progress row inside hero ---------- */
+  .hero-progress-row{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:0.02em;
+    color:rgba(255,255,255,0.5);
+    margin-top:5px;
+  }
+
+  /* ---------- Home: coach note card ---------- */
+  .coach-note-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    margin-top:12px;
+  }
+  .coach-note-label{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .coach-note-card p{
+    margin:0;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.55;
+  }
 </style>
 </head>
 <body>
@@ -373,10 +415,12 @@
 
   <!-- ============ HOME ============ -->
   <div class="view active" id="view-home">
+    <h1 class="home-heading">Simons väg mot Hyrox Stockholm</h1>
     <div class="hero">
       <div class="hero-eyebrow" id="home-eyebrow">Laddar…</div>
       <div class="hero-count" id="home-count">--</div>
       <div class="hero-count-label" id="home-count-label">dagar kvar</div>
+      <div id="home-progress-row" class="hero-progress-row"></div>
       <div class="hero-race">
         Hyrox Men Doubles Open · <b>fredag 11 december 2026</b><br>
         Strawberry Arena, Stockholm
@@ -398,6 +442,7 @@
 
     <div class="section-title">Idag</div>
     <div id="home-today"></div>
+    <div id="home-coach-note"></div>
   </div>
 
   <!-- ============ PROGRAM ============ -->
@@ -739,6 +784,22 @@ WEEKS[15] = {n:15, days:{
 }, note:"Race week! Vi trappar ner volymen och förbereder oss för att kunna ge 100% på race day."};
 
 /* ================= RENDER ================= */
+let pendingOpenDayKey = null;
+
+function dayBodyHtml(day){
+  let html = '';
+  if(day.purpose) html += '<div class="day-purpose"><div class="blk-t" style="margin-bottom:6px;">Syfte</div>'+day.purpose+'</div>';
+  (day.blocks||[]).forEach(b=>{
+    html += '<div class="blk">'+(b.t?'<div class="blk-t">'+b.t+'</div>':'')+'<div class="blk-d">'+b.d+'</div></div>';
+  });
+  if(day.table){
+    html += '<table class="blk-table"><tr>'+day.table.headers.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+
+            '<tr>'+day.table.row.map(v=>'<td>'+v+'</td>').join('')+'</tr></table>';
+    if(day.table.note) html += '<div class="blk-d" style="margin-top:8px;font-family:\'IBM Plex Mono\',monospace;font-size:11.5px;color:var(--muted);">'+day.table.note+'</div>';
+  }
+  return html;
+}
+
 function todayProgramWeek(){
   const now = new Date(); now.setHours(0,0,0,0);
   const start = new Date(START_DATE);
@@ -792,11 +853,35 @@ function renderHome(){
     } else {
       const d = document.createElement('div');
       d.className='today-card';
-      d.innerHTML = '<div class="tag">'+DOW_LABELS[tw.dowIdx]+' · vecka '+tw.week+'</div><h3>'+day.name+'</h3><p>'+(day.purpose||'')+'</p>';
+      d.innerHTML = '<div class="tag">'+DOW_LABELS[tw.dowIdx]+' · vecka '+tw.week+'</div><h3>'+day.name+'</h3>'+dayBodyHtml(day);
       d.style.cursor='pointer';
-      d.onclick=()=>{ goWeek(tw.week); switchView('week'); };
+      d.onclick=()=>{ pendingOpenDayKey = dayKey; goWeek(tw.week); switchView('week'); };
       holder.appendChild(d);
     }
+  }
+
+  // progress row
+  const progressRow = document.getElementById('home-progress-row');
+  if(!tw.beforeStart && !tw.afterEnd){
+    let passCount = 0;
+    for(let w=1; w<tw.week; w++){
+      DOW_KEYS.forEach(dk=>{ if(WEEKS[w].days[dk].tag!=='rest') passCount++; });
+    }
+    for(let di=0; di<tw.dowIdx; di++){
+      if(WEEKS[tw.week].days[DOW_KEYS[di]].tag!=='rest') passCount++;
+    }
+    progressRow.textContent = 'Vecka '+tw.week+' av 15 · '+passCount+' pass bakom dig';
+    progressRow.style.display='';
+  } else {
+    progressRow.style.display='none';
+  }
+
+  // coach note
+  const coachHolder = document.getElementById('home-coach-note');
+  if(!tw.beforeStart && !tw.afterEnd && WEEKS[tw.week].note){
+    coachHolder.innerHTML='<div class="coach-note-card"><div class="coach-note-label mono">Från coachen</div><p>'+WEEKS[tw.week].note+'</p></div>';
+  } else {
+    coachHolder.innerHTML='';
   }
 
 function bandColor(w){
@@ -877,23 +962,18 @@ function renderWeek(){
     const day = wk.days[k];
     const det = document.createElement('details');
     det.className='day-card';
-    if(day.tag==='quality' || day.tag==='race') det.open=false;
     const tagClass = 'tag-'+day.tag;
     const tagLabel = {easy:'Lätt',quality:'Kvalitet',strength:'Styrka',rest:'Vila',race:'Race'}[day.tag];
-    let bodyHtml = '';
-    if(day.purpose) bodyHtml += '<div class="day-purpose"><div class="blk-t" style="margin-bottom:6px;">Syfte</div>'+day.purpose+'</div>';
-    (day.blocks||[]).forEach(b=>{
-      bodyHtml += '<div class="blk">'+(b.t?'<div class="blk-t">'+b.t+'</div>':'')+'<div class="blk-d">'+b.d+'</div></div>';
-    });
-    if(day.table){
-      bodyHtml += '<table class="blk-table"><tr>'+day.table.headers.map(h=>'<th>'+h+'</th>').join('')+'</tr><tr>'+day.table.row.map(v=>'<td>'+v+'</td>').join('')+'</tr></table>';
-      if(day.table.note) bodyHtml += '<div class="blk-d" style="margin-top:8px; font-family:\'IBM Plex Mono\',monospace; font-size:11.5px; color:var(--muted);">'+day.table.note+'</div>';
-    }
     det.innerHTML = '<summary>'+
       '<div class="day-left"><span class="day-dow">'+DOW_LABELS[i]+'</span><span class="day-name">'+day.name+'</span></div>'+
       '<span class="day-tag '+tagClass+'">'+tagLabel+'</span>'+
-      '</summary><div class="day-body">'+bodyHtml+'</div>';
+      '</summary><div class="day-body">'+dayBodyHtml(day)+'</div>';
     days.appendChild(det);
+    if(pendingOpenDayKey === k){
+      pendingOpenDayKey = null;
+      det.open = true;
+      setTimeout(()=>det.scrollIntoView({behavior:'smooth', block:'start'}), 80);
+    }
   });
 }
 
