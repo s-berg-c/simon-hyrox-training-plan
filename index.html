@@ -416,14 +416,14 @@
 
   <!-- ============ HOME ============ -->
   <div class="view active" id="view-home">
-    <h1 class="home-heading">Simons väg mot Hyrox Stockholm</h1>
+    <h1 class="home-heading">Simons väg mot <span style="background:linear-gradient(120deg,transparent 0%,transparent 3%,var(--accent) 3%,var(--accent) 97%,transparent 97%);padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone;">Hyrox Stockholm</span></h1>
     <div class="hero">
       <div class="hero-eyebrow" id="home-eyebrow">Laddar…</div>
       <div class="hero-count" id="home-count">--</div>
       <div class="hero-count-label" id="home-count-label">dagar kvar</div>
       <div id="home-progress-row" class="hero-progress-row"></div>
       <div class="hero-race">
-        Hyrox Men Doubles Open · <b>fredag 11 december 2026</b><br>
+        Hyrox Men Doubles Open<br><b>Fredag 11 december 2026</b><br>
         Strawberry Arena, Stockholm
       </div>
     </div>
@@ -789,7 +789,7 @@ let pendingOpenDayKey = null;
 
 function dayBodyHtml(day){
   let html = '';
-  if(day.purpose) html += '<div class="day-purpose"><div class="blk-t" style="margin-bottom:6px;">Syfte</div>'+day.purpose+'</div>';
+  if(day.purpose) html += '<div class="day-purpose"><div class="blk-t" style="margin-bottom:6px;">Syfte med dagens pass</div>'+day.purpose+'</div>';
   (day.blocks||[]).forEach(b=>{
     html += '<div class="blk">'+(b.t?'<div class="blk-t">'+b.t+'</div>':'')+'<div class="blk-d">'+b.d+'</div></div>';
   });
@@ -871,7 +871,7 @@ function renderHome(){
     for(let di=0; di<tw.dowIdx; di++){
       if(WEEKS[tw.week].days[DOW_KEYS[di]].tag!=='rest') passCount++;
     }
-    progressRow.textContent = 'Vecka '+tw.week+' av 15 · '+passCount+' pass bakom dig';
+    progressRow.textContent = passCount+' pass bakom dig';
     progressRow.style.display='';
   } else {
     progressRow.style.display='none';
