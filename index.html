@@ -196,8 +196,8 @@
 
   /* ---------- Phase list (Program view) ---------- */
   .phase-card{
-    background:var(--surface);
-    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+    background:linear-gradient(135deg, #D6FF3F 0%, #EEFAA8 100%);
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
     border-radius:var(--radius-lg);
     padding:22px;
     margin-bottom:14px;
@@ -205,7 +205,7 @@
   .phase-card .k{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
-    color:var(--muted);
+    color:var(--ink-soft);
     text-transform:uppercase;
     letter-spacing:0.06em;
   }
@@ -225,12 +225,13 @@
     font-size:11.5px;
     padding:6px 10px;
     border-radius:999px;
-    background:var(--surface);
-    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    background:var(--dark);
+    color:#fff;
+    box-shadow:none;
     cursor:pointer;
   }
-  .week-chip:hover{background:var(--bg);}
-  .week-chip.current{background:var(--accent); box-shadow:none; font-weight:600;}
+  .week-chip:hover{opacity:0.8;}
+  .week-chip.current{box-shadow:inset 0 0 0 2px var(--accent); font-weight:600;}
 
   /* ---------- Week view ---------- */
   .week-picker{
@@ -268,8 +269,8 @@
   }
 
   .day-card{
-    background:var(--surface);
-    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+    background:linear-gradient(135deg, #D6FF3F 0%, #EEFAA8 100%);
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
     border-radius:var(--radius-md);
     margin-bottom:10px;
     overflow:hidden;
@@ -299,11 +300,7 @@
     padding:4px 8px;
     border-radius:999px;
   }
-  .tag-easy{background:#EFEEE6; color:var(--muted);}
-  .tag-quality{background:var(--accent); color:var(--ink);}
-  .tag-strength{background:#EFEEE6; color:var(--muted);}
-  .tag-rest{background:transparent; color:var(--muted);}
-  .tag-race{background:var(--dark); color:#fff;}
+  .tag-easy,.tag-quality,.tag-strength,.tag-rest,.tag-race{background:var(--dark); color:#fff;}
   .chev{color:var(--muted); font-size:12px; flex:0 0 auto;}
   .day-body{padding:0 16px 18px;}
   .day-purpose{font-size:13px; color:var(--ink-soft); line-height:1.55; margin:0 0 14px; padding-top:2px; border-top:1px solid var(--line); padding-top:14px;}
@@ -339,11 +336,13 @@
     flex:0 0 auto; width:20px;
   }
   .principle p{margin:0; font-size:13px; color:var(--ink-soft); line-height:1.55;}
-  .goal-box{
-    background:linear-gradient(160deg, #1a1915 0%, #0c0b09 100%); color:#fff; border-radius:var(--radius-lg); padding:22px; margin-bottom:14px;
+  .program-intro{
+    font-size:15px;
+    font-weight:500;
+    color:var(--ink-soft);
+    line-height:1.55;
+    margin:0 0 20px;
   }
-  .goal-box .k{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em;}
-  .goal-box p{font-size:15px; line-height:1.5; margin:10px 0 0; font-weight:500;}
 
   /* ---------- Bottom nav ---------- */
   .navbar{
@@ -428,7 +427,7 @@
 
   <!-- ============ HOME ============ -->
   <div class="view active" id="view-home">
-    <h1 class="home-heading">Simons väg mot <span style="background:linear-gradient(120deg,transparent 0%,transparent 3%,var(--accent) 3%,var(--accent) 97%,transparent 97%);padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone;">Hyrox Stockholm</span></h1>
+    <h1 class="home-heading">Simons väg mot Hyrox Stockholm</h1>
     <div class="hero">
       <div class="hero-eyebrow" id="home-eyebrow">Laddar…</div>
       <div class="hero-count" id="home-count">--</div>
@@ -461,6 +460,7 @@
   <!-- ============ PROGRAM ============ -->
   <div class="view" id="view-program">
     <div class="section-title" style="margin-top:20px;">Programmet</div>
+    <p class="program-intro">Bygga en stark grund för hybridträning med målet att genomföra Hyrox Men Doubles Open i Stockholm, fredag 11 december.</p>
     <div id="program-list"></div>
   </div>
 
@@ -481,9 +481,13 @@
   <div class="view" id="view-ref">
     <div class="section-title" style="margin-top:20px;">Referenser</div>
 
-    <div class="goal-box">
-      <div class="k">Programmets syfte</div>
-      <p>Bygga en stark grund för hybridträning med målet att genomföra Hyrox Men Doubles Open i Stockholm, fredag 11 december.</p>
+    <div class="ref-card">
+      <h3>Coachprinciper</h3>
+      <div class="principle"><div class="n">01</div><p>Vila vid känning av sjukdom. Hämta inte igen det med hårdare träning resten av veckan.</p></div>
+      <div class="principle"><div class="n">02</div><p>Kapacitet och fitness byggs över tid. Vi programmerar för racet och stressar inte prestation. Vi bygger en grund att stå på för fortsatt träning i många år framåt.</p></div>
+      <div class="principle"><div class="n">03</div><p>Lyssna på kroppen. Om du efter uppvärmning känner dig för trött för dagens pass — testa att köra 50% eller gå hem och vila.</p></div>
+      <div class="principle"><div class="n">04</div><p>Sluta pusha om något gör ont under passet. Känningar är ok. Smärta — stopp, direkt.</p></div>
+      <div class="principle"><div class="n">05</div><p>Om en känning inte är borta inom 48–72 timmar: Boka fysio/läkare innan nästa hårda pass.</p></div>
     </div>
 
     <div class="ref-card">
@@ -528,14 +532,6 @@
       </table>
     </div>
 
-    <div class="ref-card">
-      <h3>Coachprinciper</h3>
-      <div class="principle"><div class="n">01</div><p>Vila vid känning av sjukdom. Hämta inte igen det med hårdare träning resten av veckan.</p></div>
-      <div class="principle"><div class="n">02</div><p>Kapacitet och fitness byggs över tid. Vi programmerar för racet och stressar inte prestation. Vi bygger en grund att stå på för fortsatt träning i många år framåt.</p></div>
-      <div class="principle"><div class="n">03</div><p>Lyssna på kroppen. Om du efter uppvärmning känner dig för trött för dagens pass — testa att köra 50% eller gå hem och vila.</p></div>
-      <div class="principle"><div class="n">04</div><p>Sluta pusha om något gör ont under passet. Känningar är ok. Smärta — stopp, direkt.</p></div>
-      <div class="principle"><div class="n">05</div><p>Om en känning inte är borta inom 48–72 timmar: Boka fysio/läkare innan nästa hårda pass.</p></div>
-    </div>
   </div>
 
 </div>
@@ -888,7 +884,7 @@ function renderHome(){
       DOW_KEYS.forEach(dk=>{ if(WEEKS[w].days[dk].tag!=='rest') totalPass++; });
     }
     const remaining = totalPass - passCount;
-    progressRow.textContent = passCount+' bakom dig · '+remaining+' kvar till race day';
+    progressRow.textContent = passCount+' pass bakom dig · '+remaining+' pass kvar till race day';
     progressRow.style.display='';
   } else {
     progressRow.style.display='none';
